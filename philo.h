@@ -53,3 +53,4 @@ void		eating(char **av);
 void		sleeping(char **av);
 
 #endif
+//defef
