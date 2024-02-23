@@ -6,7 +6,7 @@
 /*   By: bsafi <bsafi@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:36:36 by bsafi             #+#    #+#             */
-/*   Updated: 2024/02/13 18:29:56 by bsafi            ###   ########.fr       */
+/*   Updated: 2024/02/20 19:38:19 by bsafi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,12 @@ void	checkarg(char **av)
 	}
 }
 
-/*void	dying()
-{
-	usleep(ft_atoi(av[2]) * 1000);
-}
-
-void	eating()
+void	eating(char **av)
 {
 	usleep(ft_atoi(av[3]) * 1000);
 }
 
-void	sleeping()
+void	sleeping(char **av)
 {
 	usleep(ft_atoi(av[4]) * 1000);
-}*/
+}

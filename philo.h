@@ -6,7 +6,7 @@
 /*   By: bsafi <bsafi@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 22:14:28 by bsafi             #+#    #+#             */
-/*   Updated: 2024/02/15 21:08:34 by bsafi            ###   ########.fr       */
+/*   Updated: 2024/02/22 00:16:22 by bsafi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,27 @@ void		checkarg(char **av);
 typedef struct s_philo
 {
 	pthread_t		thread;
-	pthread_mutex_t	*fork;
-	pthread_mutex_t	*rfork;
-	//int				fork;
+	pthread_mutex_t	fork;
+	//pthread_mutex_t	*rfork;
+	int				idphilo;
+	int				rfork;
 	//int				rfork; beely avait mis qu'un mutex pour plus de vitess
 }			t_philo;
 
 typedef struct s_all
 {
+	int		tid;
+	int		token;
 	int		nphilo;
 	int		nbreat;
+	int		time2die;
 	t_philo	*philo;
 }			t_all;
 
 void		getnphilo(t_all *all, char **av);
 void		makethread(t_all *all);
 void		*thread_routine(void *data);
+void		eating(char **av);
+void		sleeping(char **av);
 
 #endif
