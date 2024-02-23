@@ -27,25 +27,27 @@ void		checkarg(char **av);
 typedef struct s_philo
 {
 	pthread_t		thread;
-	pthread_mutex_t	fork;
+	pthread_mutex_t	*fork;
 	//pthread_mutex_t	*rfork;
-	int				idphilo;
+	int				id;
+	int				eat;
 	int				rfork;
+	struct	s_all	*all;
 	//int				rfork; beely avait mis qu'un mutex pour plus de vitess
 }			t_philo;
 
 typedef struct s_all
 {
-	int		tid;
-	int		token;
-	int		nphilo;
-	int		nbreat;
-	int		time2die;
-	t_philo	*philo;
+	int				token;
+	int				nphilo;
+	int				nbreat;
+	int				time2die;
+	pthread_mutex_t	*fork;
+	t_philo			*philo;
 }			t_all;
 
 void		getnphilo(t_all *all, char **av);
-void		makethread(t_all *all);
+void		makethread(t_all *all, t_philo *philo);
 void		*thread_routine(void *data);
 void		eating(char **av);
 void		sleeping(char **av);

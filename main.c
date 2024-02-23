@@ -14,7 +14,8 @@
 
 int	main(int ac, char **av)
 {
-	t_all		all;
+	t_philo		philo;
+	t_all		*all;
 	//pthread_t	tid;
 
 	if (ac > 6 || ac < 5)
@@ -22,13 +23,14 @@ int	main(int ac, char **av)
 		printf("error nbr args\n");
 		exit(1);
 	}
-	all.token = 0;
-	all.time2die = (ft_atoi(av[2]) * 1000);
+	all = malloc(sizeof(t_all));
+	//all.token = 0;
+	//all.time2die = (ft_atoi(av[2]) * 1000);
 	checkarg(av);
-	getnphilo(&all, av);
+	getnphilo(all, av);
 	//tid = pthread_self();
 	//printf("ALORS %ld\n", tid);
-	makethread(&all);
+	makethread(all, &philo);
 	//printf("ALORS %ld\n", tid);
 	//pthread_join(tid, NULL);
 	/*int	i;
