@@ -1,15 +1,15 @@
-SRCS = main.c utils.c first.c\
+SRCS = main.c utils.c first.c do.c\
 
 OBJS = ${SRCS:.c=.o}
 NAME = philo
 CC = gcc
 RM = rm -f
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
 
 all: ${NAME}
 
 ${NAME}: ${OBJS}
-		${CC} ${FLAGS} ${OBJS} -o ${NAME}
+		${CC} ${CFLAGS} ${OBJS} -o ${NAME}
 
 .c.o:
 		${CC} ${CFLAGS} -c $< -o ${<:.c=.o}

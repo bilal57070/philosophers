@@ -6,24 +6,48 @@
 /*   By: bsafi <bsafi@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 22:03:34 by bsafi             #+#    #+#             */
-/*   Updated: 2024/02/22 00:35:05 by bsafi            ###   ########.fr       */
+/*   Updated: 2024/03/06 21:48:53 by bsafi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	getnphilo(t_all *all, char **av)
+void	initall(t_all *all, char **av)
 {
-	all->nphilo = 0;
+	all->time = get_current_time();
 	all->nphilo = ft_atoi(av[1]);
+	all->token = 0;
+	//all->alleat = 0;
+	all->time2die = (ft_atoi(av[2]));
+	all->time2eat = (ft_atoi(av[3]));
+	all->time2sleep = (ft_atoi(av[4]));
 	if (av[5])
 		all->nbreat = ft_atoi(av[5]);
+	else
+		all->nbreat = 0;
+	pthread_mutex_init(&all->print, NULL);
+	pthread_mutex_init(&all->checkdeath, NULL);
+	//pthread_mutex_init(&all->gct, NULL);
 }
 
-/*void	init(t_all *all)
+void	initmut(t_all *all)
 {
-	pthread_mutex_init(all->fork, NULL);
-}*/
+	int	i;
+
+	i = -1;
+	all->fork = malloc(sizeof(pthread_mutex_t) * all->nphilo);
+	while (++i < all->nphilo)
+		pthread_mutex_init(&all->fork[i], NULL);
+	i = -1;
+	while (++i < (all->nphilo - 1))
+	{
+		all->philo[i].fork = &all->fork[i];
+		all->philo[i].rfork = &all->fork[i + 1];
+	}
+	//printf("%d\n", i);
+	all->philo[i].fork = &all->fork[i];
+	all->philo[i].rfork = &all->fork[0];
+}
 
 void	initstruc(t_all *all)
 {
@@ -32,34 +56,38 @@ void	initstruc(t_all *all)
 	i = 0;
 	while (i < all->nphilo)
 	{
-		all->philo[i].id = i;
-		all->philo[i].eat = 0; 
+		all->philo[i].id = (i + 1);
+		all->philo[i].nbrmeal = 0;
+		all->philo[i].fini = 0;
+		all->philo[i].lasteat = all->time;
 		all->philo[i].all = all;
 		i++;
 	}
 }
 
-void	makethread(t_all *all, t_philo *philo)
+void	makethread(t_all *all)//, t_philo *philo)
 {
 	int i = 0;
-	philo->all = malloc(sizeof(t_all));
-	all->philo = malloc(sizeof(t_philo) * all->nphilo);
-	all->philo->rfork = 1;
+	//philo->all = malloc(sizeof(t_all));
+	//all->philo = malloc(sizeof(t_philo) * all->nphilo);
+	//all->philo->rfork = 1;
+	pthread_create(&all->death, NULL, ryuk, &all->philo[i]);
 	while (i < (all->nphilo))
 	{
 		//printf("test %d\n", all->i);
 		//all->philo->idphilo = all->i;
-		philo[i].id = i;
+		//philo[i].id = i;
 		//printf("id : %d\n", philo->id);
-		pthread_create(&philo[i].thread, NULL, thread_routine, philo);
+		ft_usleep(5);
+		pthread_create(&all->philo[i].thread, NULL, thread_routine, &all->philo[i]);
 		i++;
-		all->philo->rfork++;
+		//all->philo->rfork++;
 	}
 	int n;
 	n = 0;
 	while (n < all->nphilo)
 	{
-		pthread_join(philo[n].thread, NULL);
+		pthread_join(all->philo[n].thread, NULL);
 		n++;
 	}
 }
@@ -67,48 +95,29 @@ void	makethread(t_all *all, t_philo *philo)
 void	*thread_routine(void *data)
 {
 	t_philo		*philo;
-	int			r;
-	
+
 	philo = (t_philo *)data;
-	r = 0;
-	printf("all : %d\n", philo->id);
-	printf("peut etre \n");
-	while (r < philo->all->nphilo) // faire qvqnt lq routine
-	{
-		//printf("nani\n");
-		pthread_mutex_init(philo->fork, NULL);
-		//printf("nani2\n");
-		//pthread_join(all->philo[r].thread, NULL);
-		//printf("nani3\n");
-		r++;
-	}
-	//printf("all 2: %d\n", all->tid);
-	//printf("ici\n");
+	//pthread_mutex_lock(&philo->all->gct);
+	philo->lasteat = get_current_time();
+	//pthread_mutex_unlock(&philo->all->gct);
+	//printf("all : %d\n", philo->id);
 	while (philo->all->token != 1) //2e condition qu'il est manger suffisemment de fois
 	{
-		//if ((philo->tid) == (all->nphilo - 1)) //|| all->philo->rfork > all->nphilo)
-		//	all->philo[all->tid].rfork = 1;
-		//printf("id : %d\n", philo->id);
-		//pthread_mutex_lock(&all->philo[all->tid].fork);
-		//printf("  Philo %d has taken a fork\n", all->i);
-		//pthread_mutex_lock(&all->philo[all->philo[all->tid].rfork].fork);
-		//printf("  Philo %d has taken a fork\n", all->i);
-		usleep(20000);
-		//printf("  Philo %d mange chacal\n", all->i);
-		//pthread_mutex_unlock(&all->philo[all->tid].fork);
-		//pthread_mutex_unlock(&all->philo[all->philo[all->tid].rfork].fork);
+		if (philo->all->token == 1)
+			break;
+		eating(philo);
+		if (philo->all->token == 1)
+			break;
+		sleeping(philo);
+		if (philo->all->token == 1)
+			break;
+		thinking(philo);
+		if (philo->all->token == 1)
+			break;
 	}
-	//pthread_t	tid;
-	//int			i;
-
-	//tid = pthread_self();
-	//printf("test%ld  %d\n", tid, all->nphilo);
-	//while ()
 	return NULL;
 }
-
-// ZBI PK LE ALL->TID PART PAS DE 0 QUAND JE PRINT CA PART DE 1
-
+ /*faire une fonction qui print mais qui securise d'abord avec mutex*/
 
 //pour le dernier thread manger
 //if le i de all->philo[i] == all->nphilo dans ce cas all->philo[i].rfork == 1 (le premier philo)

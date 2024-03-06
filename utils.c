@@ -6,7 +6,7 @@
 /*   By: bsafi <bsafi@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 16:36:36 by bsafi             #+#    #+#             */
-/*   Updated: 2024/02/20 19:38:19 by bsafi            ###   ########.fr       */
+/*   Updated: 2024/03/06 12:09:41 by bsafi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,21 @@ void	checkarg(char **av)
 	}
 }
 
-void	eating(char **av)
+long long	get_current_time(void)
 {
-	usleep(ft_atoi(av[3]) * 1000);
+	struct timeval	time;
+
+	if (gettimeofday(&time, NULL) == -1)
+		write(2, "gettimeofday() error\n", 22);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-void	sleeping(char **av)
+int	ft_usleep(long long milliseconds)
 {
-	usleep(ft_atoi(av[4]) * 1000);
+	long long	start;
+
+	start = get_current_time();
+	while ((get_current_time() - start) < milliseconds)
+		usleep(50);
+	return (0);
 }

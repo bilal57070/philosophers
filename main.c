@@ -6,7 +6,7 @@
 /*   By: bsafi <bsafi@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 15:43:33 by bsafi             #+#    #+#             */
-/*   Updated: 2024/02/20 19:39:09 by bsafi            ###   ########.fr       */
+/*   Updated: 2024/03/05 22:01:10 by bsafi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 int	main(int ac, char **av)
 {
-	t_philo		philo;
+	t_philo		*philo;
 	t_all		*all;
-	//pthread_t	tid;
 
 	if (ac > 6 || ac < 5)
 	{
@@ -24,22 +23,15 @@ int	main(int ac, char **av)
 		exit(1);
 	}
 	all = malloc(sizeof(t_all));
+	philo = NULL;
 	//all.token = 0;
 	//all.time2die = (ft_atoi(av[2]) * 1000);
 	checkarg(av);
-	getnphilo(all, av);
-	//tid = pthread_self();
-	//printf("ALORS %ld\n", tid);
-	makethread(all, &philo);
-	//printf("ALORS %ld\n", tid);
-	//pthread_join(tid, NULL);
-	/*int	i;
-
-	i = 0;
-	while (i < all.nphilo)
-	{
-		printf("test\n");
-		pthread_create(&all.philo[i].thread, NULL, thread_routine, &all);
-	}*/
+	initall(all, av);
+	all->philo = malloc(sizeof(t_philo) * all->nphilo);
+	initmut(all);
+	initstruc(all);
+	makethread(all); //, philo);
+	(void)philo;
 	return (0);
 }

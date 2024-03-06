@@ -6,7 +6,7 @@
 /*   By: bsafi <bsafi@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 22:14:28 by bsafi             #+#    #+#             */
-/*   Updated: 2024/02/22 00:16:22 by bsafi            ###   ########.fr       */
+/*   Updated: 2024/03/06 21:43:56 by bsafi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include <limits.h>
 # include <pthread.h>
+# include <sys/time.h>
 
 long int	ft_atoi(const char *str);
 void		check(int a);
@@ -28,29 +29,47 @@ typedef struct s_philo
 {
 	pthread_t		thread;
 	pthread_mutex_t	*fork;
-	//pthread_mutex_t	*rfork;
+	pthread_mutex_t	*rfork;
 	int				id;
-	int				eat;
-	int				rfork;
+	int				nbrmeal;
+	int				fini;
+	long long		lasteat;
 	struct	s_all	*all;
-	//int				rfork; beely avait mis qu'un mutex pour plus de vitess
 }			t_philo;
 
 typedef struct s_all
 {
+	//int				alleat;
 	int				token;
 	int				nphilo;
 	int				nbreat;
 	int				time2die;
+	int				time2eat;
+	int				time2sleep;
+	long long		time;
+	pthread_t		death;
 	pthread_mutex_t	*fork;
+	pthread_mutex_t	print;
+	pthread_mutex_t gct;
+	pthread_mutex_t	checkdeath;
 	t_philo			*philo;
 }			t_all;
 
-void		getnphilo(t_all *all, char **av);
-void		makethread(t_all *all, t_philo *philo);
+void		initall(t_all *all, char **av);
+void		makethread(t_all *all);//, t_philo *philo);
 void		*thread_routine(void *data);
-void		eating(char **av);
-void		sleeping(char **av);
+void		initstruc(t_all *all);
+void		eating(t_philo *philo);
+void		sleeping(t_philo *philo);
+void		thinking(t_philo *philo);
+void		initmut(t_all *all);
+long long	get_current_time(void);
+void		*ryuk(void *data);
+int			death(t_philo *philo);
+void		unlock(t_philo *philo);
+int			bienmanger(t_philo *philo);
+int			ft_usleep(long long milliseconds);
+
 
 #endif
 //defef
