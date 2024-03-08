@@ -69,9 +69,6 @@ void	initstruc(t_all *all)
 void	makethread(t_all *all)//, t_philo *philo)
 {
 	int i = 0;
-	//philo->all = malloc(sizeof(t_all));
-	//all->philo = malloc(sizeof(t_philo) * all->nphilo);
-	//all->philo->rfork = 1;
 	pthread_create(&all->death, NULL, ryuk, &all->philo[i]);
 	while (i < (all->nphilo))
 	{
@@ -96,8 +93,8 @@ void	*thread_routine(void *data)
 	philo->lasteat = get_current_time();
 	pthread_mutex_unlock(&philo->all->lmeal);
 	//printf("all : %d\n", philo->id);
-	if (philo->id % 2)
-		usleep(5000);
+	if (philo->id % 2 != 0)
+		usleep(15000);
 	while (checkdie(philo) != 1) //2e condition qu'il est manger suffisemment de fois
 	{
 		if (checkdie(philo) == 1)
