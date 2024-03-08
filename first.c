@@ -6,7 +6,7 @@
 /*   By: bsafi <bsafi@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 22:03:34 by bsafi             #+#    #+#             */
-/*   Updated: 2024/03/06 21:48:53 by bsafi            ###   ########.fr       */
+/*   Updated: 2024/03/07 23:19:28 by bsafi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	initall(t_all *all, char **av)
 		all->nbreat = 0;
 	pthread_mutex_init(&all->print, NULL);
 	pthread_mutex_init(&all->checkdeath, NULL);
-	//pthread_mutex_init(&all->gct, NULL);
+	pthread_mutex_init(&all->lmeal, NULL);
+	pthread_mutex_init(&all->nbr, NULL);
 }
 
 void	initmut(t_all *all)
@@ -83,13 +84,7 @@ void	makethread(t_all *all)//, t_philo *philo)
 		i++;
 		//all->philo->rfork++;
 	}
-	int n;
-	n = 0;
-	while (n < all->nphilo)
-	{
-		pthread_join(all->philo[n].thread, NULL);
-		n++;
-	}
+	end(all);
 }
 
 void	*thread_routine(void *data)
@@ -97,22 +92,24 @@ void	*thread_routine(void *data)
 	t_philo		*philo;
 
 	philo = (t_philo *)data;
-	//pthread_mutex_lock(&philo->all->gct);
+	pthread_mutex_lock(&philo->all->lmeal);
 	philo->lasteat = get_current_time();
-	//pthread_mutex_unlock(&philo->all->gct);
+	pthread_mutex_unlock(&philo->all->lmeal);
 	//printf("all : %d\n", philo->id);
-	while (philo->all->token != 1) //2e condition qu'il est manger suffisemment de fois
+	if (philo->id % 2)
+		usleep(5000);
+	while (checkdie(philo) != 1) //2e condition qu'il est manger suffisemment de fois
 	{
-		if (philo->all->token == 1)
+		if (checkdie(philo) == 1)
 			break;
 		eating(philo);
-		if (philo->all->token == 1)
+		if (checkdie(philo) == 1)
 			break;
 		sleeping(philo);
-		if (philo->all->token == 1)
+		if (checkdie(philo) == 1)
 			break;
 		thinking(philo);
-		if (philo->all->token == 1)
+		if (checkdie(philo) == 1)
 			break;
 	}
 	return NULL;

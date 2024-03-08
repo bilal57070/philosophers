@@ -6,7 +6,7 @@
 /*   By: bsafi <bsafi@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 15:43:33 by bsafi             #+#    #+#             */
-/*   Updated: 2024/03/05 22:01:10 by bsafi            ###   ########.fr       */
+/*   Updated: 2024/03/07 21:41:08 by bsafi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	main(int ac, char **av)
 	initmut(all);
 	initstruc(all);
 	makethread(all); //, philo);
+	//end(all);
 	(void)philo;
 	return (0);
 }
