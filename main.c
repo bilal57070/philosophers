@@ -6,7 +6,7 @@
 /*   By: bsafi <bsafi@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 15:43:33 by bsafi             #+#    #+#             */
-/*   Updated: 2024/03/07 21:41:08 by bsafi            ###   ########.fr       */
+/*   Updated: 2024/03/12 15:42:37 by bsafi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,20 @@ int	main(int ac, char **av)
 	//all.time2die = (ft_atoi(av[2]) * 1000);
 	checkarg(av);
 	initall(all, av);
+	/*if (all->nphilo == 1)
+	{
+		theone(all);
+		free(all);
+		return (0);
+	}*/
 	all->philo = malloc(sizeof(t_philo) * all->nphilo);
 	initmut(all);
 	initstruc(all);
 	makethread(all); //, philo);
 	//end(all);
 	(void)philo;
+	free(all->fork);
+	free(all->philo);
+	free(all);
 	return (0);
 }

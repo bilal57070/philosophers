@@ -1,10 +1,10 @@
-SRCS = main.c utils.c first.c do.c\
+SRCS = main.c utils.c first.c do.c \
 
 OBJS = ${SRCS:.c=.o}
 NAME = philo
 CC = gcc
 RM = rm -f
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address #-fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=thread
 
 all: ${NAME}
 

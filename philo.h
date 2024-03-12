@@ -6,7 +6,7 @@
 /*   By: bsafi <bsafi@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 22:14:28 by bsafi             #+#    #+#             */
-/*   Updated: 2024/03/07 20:44:14 by bsafi            ###   ########.fr       */
+/*   Updated: 2024/03/11 17:40:59 by bsafi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ int			bienmanger(t_philo *philo);
 int			ft_usleep(long long milliseconds);
 int			checkdie(t_philo *philo);
 void		end(t_all *all);
-
+int			checkeat(t_philo *philo);
+void		theone(t_all *all);
 
 #endif
 //defef

@@ -6,7 +6,7 @@
 /*   By: bsafi <bsafi@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 22:03:34 by bsafi             #+#    #+#             */
-/*   Updated: 2024/03/07 23:19:28 by bsafi            ###   ########.fr       */
+/*   Updated: 2024/03/11 18:00:33 by bsafi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,13 @@ void	makethread(t_all *all)//, t_philo *philo)
 		//all->philo->idphilo = all->i;
 		//philo[i].id = i;
 		//printf("id : %d\n", philo->id);
-		ft_usleep(5);
+		//usleep(5000);
 		pthread_create(&all->philo[i].thread, NULL, thread_routine, &all->philo[i]);
 		i++;
 		//all->philo->rfork++;
 	}
 	end(all);
+	pthread_join(all->death, NULL);
 }
 
 void	*thread_routine(void *data)
@@ -94,19 +95,19 @@ void	*thread_routine(void *data)
 	pthread_mutex_unlock(&philo->all->lmeal);
 	//printf("all : %d\n", philo->id);
 	if (philo->id % 2 != 0)
-		usleep(15000);
-	while (checkdie(philo) != 1) //2e condition qu'il est manger suffisemment de fois
+		usleep(5000);
+	while (checkdie(philo) != 1)// && checkeat(philo) != 1) //2e condition qu'il est manger suffisemment de fois
 	{
-		if (checkdie(philo) == 1)
+		if (checkdie(philo) == 1)// || checkeat(philo) == 1)
 			break;
 		eating(philo);
-		if (checkdie(philo) == 1)
+		if (checkdie(philo) == 1)// || checkeat(philo) == 1)
 			break;
 		sleeping(philo);
-		if (checkdie(philo) == 1)
+		if (checkdie(philo) == 1)// || checkeat(philo) == 1)
 			break;
 		thinking(philo);
-		if (checkdie(philo) == 1)
+		if (checkdie(philo) == 1)// || checkeat(philo) == 1)
 			break;
 	}
 	return NULL;
