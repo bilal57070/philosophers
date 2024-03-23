@@ -1,4 +1,4 @@
-SRCS = main.c utils.c first.c do.c \
+SRCS = main.c utils.c first.c do.c death.c lock.c \
 
 OBJS = ${SRCS:.c=.o}
 NAME = philo

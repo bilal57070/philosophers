@@ -6,7 +6,7 @@
 /*   By: bsafi <bsafi@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 22:14:28 by bsafi             #+#    #+#             */
-/*   Updated: 2024/03/11 17:40:59 by bsafi            ###   ########.fr       */
+/*   Updated: 2024/03/23 14:53:58 by bsafi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,11 @@ typedef struct s_philo
 	int				nbrmeal;
 	int				fini;
 	long long		lasteat;
-	struct	s_all	*all;
+	struct s_all	*all;
 }			t_philo;
 
 typedef struct s_all
 {
-	//int				alleat;
 	int				token;
 	int				nphilo;
 	int				nbreat;
@@ -50,14 +49,14 @@ typedef struct s_all
 	pthread_t		death;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	print;
-	pthread_mutex_t lmeal;
+	pthread_mutex_t	lmeal;
 	pthread_mutex_t	nbr;
 	pthread_mutex_t	checkdeath;
 	t_philo			*philo;
 }			t_all;
 
 void		initall(t_all *all, char **av);
-void		makethread(t_all *all);//, t_philo *philo);
+void		makethread(t_all *all);
 void		*thread_routine(void *data);
 void		initstruc(t_all *all);
 void		eating(t_philo *philo);
@@ -74,6 +73,8 @@ int			checkdie(t_philo *philo);
 void		end(t_all *all);
 int			checkeat(t_philo *philo);
 void		theone(t_all *all);
+void		eating2(t_philo *philo);
+void		eating3(t_philo *philo);
+void		lockd(t_philo *philo);
 
 #endif
-//defef
